@@ -1,0 +1,43 @@
+name: Terraform Apply
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Configure AWS CLI
+        run: |
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get -y install python3-pip
+          pip3 install --upgrade --user awscli
+
+      - name: Deploy to AWS
+        run: |
+          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply
+        env:
+          TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
+          TF_VAR_db_username: ${{ secrets.DB_USERNAME }}
+          TF_VAR_user_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          TF_VAR_user_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: terraform apply -auto-approve -var "db_username=${TF_VAR_db_username}" -var "db_password=${TF_VAR_db_password}" -var "user_access_key=${TF_VAR_user_access_key}" -var "user_secret_key=${TF_VAR_user_secret_key}" -var-file vars.tfvars
