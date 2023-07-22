@@ -42,4 +42,6 @@ jobs:
           TF_VAR_db_username: ${{ secrets.DB_USERNAME }}
           TF_VAR_user_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           TF_VAR_user_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: terraform apply -auto-approve -var "db_username=${TF_VAR_db_username}" -var "db_password=${TF_VAR_db_password}" -var "user_access_key=${TF_VAR_user_access_key}" -var "user_secret_key=${TF_VAR_user_secret_key}" -var-file vars.tfvars
+        run: |
+          cd webapp
+          terraform apply -auto-approve -var "db_username=${TF_VAR_db_username}" -var "db_password=${TF_VAR_db_password}" -var "user_access_key=${TF_VAR_user_access_key}" -var "user_secret_key=${TF_VAR_user_secret_key}" -var-file vars.tfvars
