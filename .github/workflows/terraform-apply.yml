@@ -32,7 +32,9 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Terraform Init
-        run: terraform init
+        run: |
+          cd webapp
+          terraform init
 
       - name: Terraform Apply
         env:
