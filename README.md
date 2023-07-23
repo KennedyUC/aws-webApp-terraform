@@ -107,4 +107,10 @@ Before you begin, make sure you have the following:
     terraform apply -var-file vars.tfvars  
     ```  
       
-    You will be prompted to enter the same values as with the step above.
+    You will be prompted to enter the same values as with the step above.  
+
+6. Cleanup:
+
+    ```bash
+    terraform destroy -var-file vars.tfvars  
+    ```
