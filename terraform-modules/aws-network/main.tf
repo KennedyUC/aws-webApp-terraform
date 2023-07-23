@@ -73,7 +73,7 @@ resource "aws_nat_gateway" "nat_gateway" {
   depends_on = [aws_eip.nat_eip]
 
   tags = {
-    Name = "$${var.project_name}-${var.env}-nat-gw"
+    Name = "${var.project_name}-${var.env}-nat-gw"
   }
 }
 
