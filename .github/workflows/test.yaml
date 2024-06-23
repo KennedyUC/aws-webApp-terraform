@@ -1,0 +1,17 @@
+name: Ubuntu Terminal
+
+on:
+  push:
+    branches:
+      - main
+      
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run command
+        run: |
+          echo | openssl s_client -servername token.actions.githubusercontent.com \
+            -showcerts -connect token.actions.githubusercontent.com:443 2>/dev/null | \
+            openssl x509 -fingerprint -noout -sha1
